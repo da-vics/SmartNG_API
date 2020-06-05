@@ -28,5 +28,10 @@ namespace apiTest1.Models
         public DateTime DataInsertDat { get; set; }
 
 
+        [Required]
+        [MaxLength(100)]
+        public string ApiKeyId { get; set; }
+
+
     }
 }

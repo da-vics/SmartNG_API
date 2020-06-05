@@ -145,16 +145,24 @@ namespace apiTest1.Data
 
         public override async Task<bool> AddUserServiceData(UserDataProfile userData)
         {
-
-            var checkdat = await _commandDbContext.UserServices.FindAsync(userData.ServiceName);
+            var checkdat = await _commandDbContext.RegisterUser.FirstOrDefaultAsync(data => data.ApiKeyId == userData.apikey);
 
             if (checkdat == null)
+                return false;
+
+            var convertedservicename = $"{userData.ServiceName}_{ checkdat.Email}";
+
+            var servicenamecon = await _commandDbContext.UserServices.FirstOrDefaultAsync(dat => dat.ServiceName == convertedservicename);
+
+
+            if (servicenamecon == null)
                 return false;
 
             var userServiceData = new UserServiceDataModel();
 
             #region setDataFields
-            userServiceData.ServiceName = userData.ServiceName;
+            userServiceData.ApiKeyId = userData.apikey;
+            userServiceData.ServiceName = convertedservicename;
             userServiceData.ServiceData = userData.Userdata;
             userServiceData.DataInsertDat = DateTime.Now;
             #endregion
@@ -163,7 +171,6 @@ namespace apiTest1.Data
             _ = await this.SaveChanges();
 
             return true;
-
 
         }
 

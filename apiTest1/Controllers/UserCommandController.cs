@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.SqlTypes;
-using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using apiTest1.Data;
 using apiTest1.DataProfiles;
 using apiTest1.Handlers;
 using apiTest1.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
@@ -34,17 +29,38 @@ namespace apiTest1.Controllers
 
 
         #region UserUploadServiceData
+
         [HttpPost]
         [Route("userdataupload")]
-        public IActionResult UploadUserServiceData([FromBody] UserDataProfile userData)
+        public async Task<IActionResult> UploadUserServiceData([FromBody] UserDataProfile userData)
         {
             if (userData == null)
                 return StatusHandler.NotFound("Null Parameter Detected", "error");
 
+            bool checkResult = false;
+            try
+            {
+                checkResult = await _sqlCommandRepo.AddUserServiceData(userData);
+            }
 
-            return StatusHandler.okResult($"new serviceData Added For {userData.ServiceName}", "success");
+            catch (NullReferenceException args)
+            {
+                return StatusHandler.NotFound(args.Message, "error");
+            }
+
+            catch (DbUpdateException args)
+            {
+                return StatusHandler.NotFound(args.Message, "error");
+            }
+
+            if (checkResult == false)
+                return StatusHandler.NotFound("Service Error", "error");
+
+            else
+            {
+                return StatusHandler.okResult($"new serviceData Added For {userData.ServiceName}", "success");
+            }
         }
-
 
         #endregion
 

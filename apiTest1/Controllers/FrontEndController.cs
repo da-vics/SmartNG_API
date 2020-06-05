@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 
 namespace apiTest1.Controllers
@@ -12,8 +7,6 @@ namespace apiTest1.Controllers
     [ApiController]
     public class FrontEndController : Controller
     {
-
-
 
         public FrontEndController()
         {
@@ -25,7 +18,7 @@ namespace apiTest1.Controllers
         public IActionResult HomePage()
         {
 
-            return Content("HomePage");
+            return Content("SmartNG APi Home");
         }
 
     }

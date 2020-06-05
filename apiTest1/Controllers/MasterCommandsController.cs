@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using apiTest1.DataProfiles;
+﻿using apiTest1.DataProfiles;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace apiTest1.Controllers
@@ -18,7 +13,6 @@ namespace apiTest1.Controllers
         {
 
         }
-
 
         [HttpGet]
 

@@ -27,7 +27,6 @@ namespace apiTest1.Models
 
         public ICollection<UserServicesModel> services { get; set; }
 
-        /// public ICollection<UserServicesModel> services { get; set; }
 
         [Required]
         [MaxLength(100)]

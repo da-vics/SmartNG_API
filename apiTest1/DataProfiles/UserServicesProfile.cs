@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace apiTest1.DataProfiles
 {
@@ -10,6 +6,7 @@ namespace apiTest1.DataProfiles
     {
         [Required]
         public string ApiKey { get; set; }
+        [Required]
         public string ServiceName { get; set; }
 
     }
