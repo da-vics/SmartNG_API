@@ -10,8 +10,8 @@ using apiTest1.Data;
 namespace apiTest1.Migrations
 {
     [DbContext(typeof(apiDBContext))]
-    [Migration("20200605110132_latestchanges")]
-    partial class latestchanges
+    [Migration("20200606034555_updates")]
+    partial class updates
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,33 @@ namespace apiTest1.Migrations
                 .HasAnnotation("ProductVersion", "3.1.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("apiTest1.Models.DeviceSetupModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SetupModels");
+                });
+
+            modelBuilder.Entity("apiTest1.Models.MasterKeys", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("accessKey")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FieldMasterKey");
+                });
 
             modelBuilder.Entity("apiTest1.Models.UserRegisterModel", b =>
                 {
@@ -103,6 +130,9 @@ namespace apiTest1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
+
+                    b.Property<Guid>("DeviceId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ServiceName")
                         .IsRequired()

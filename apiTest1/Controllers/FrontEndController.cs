@@ -13,7 +13,6 @@ namespace apiTest1.Controllers
 
         }
 
-
         [HttpGet]
         public IActionResult HomePage()
         {

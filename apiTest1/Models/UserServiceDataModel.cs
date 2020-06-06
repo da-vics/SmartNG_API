@@ -10,16 +10,12 @@ namespace apiTest1.Models
 {
     public class UserServiceDataModel
     {
-
         [Key]
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(60)]
-        public string ServiceName { get; set; }
-
-        public virtual UserServicesModel services { get; set; }
-
+        public Guid DeviceId { get; set; }
+        public UserServicesModel services { get; set; }
 
         [Required]
         public decimal ServiceData { get; set; }
@@ -31,7 +27,6 @@ namespace apiTest1.Models
         [Required]
         [MaxLength(100)]
         public string ApiKeyId { get; set; }
-
 
     }
 }

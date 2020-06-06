@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace apiTest1.DataProfiles
 {
@@ -9,5 +10,7 @@ namespace apiTest1.DataProfiles
         [Required]
         public string ServiceName { get; set; }
 
+        [Required]
+        public Guid DeviceId { get; set; }
     }
 }

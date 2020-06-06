@@ -58,7 +58,7 @@ namespace apiTest1.Controllers
 
             else
             {
-                return StatusHandler.okResult($"new serviceData Added For {userData.ServiceName}", "success");
+                return StatusHandler.okResult($"new serviceData Added For {userData.DeviceId}", "success");
             }
         }
 
@@ -72,11 +72,12 @@ namespace apiTest1.Controllers
         public async Task<IActionResult> AddUserService(UserServicesProfile userServices)
         {
             if (string.IsNullOrEmpty(userServices.ServiceName))
-                return NoContent();
+                return StatusHandler.NotFound("null Parameter Detected", "error");
 
+            bool result = false;
             try
             {
-                var userserivces = await _sqlCommandRepo.CreateNewUserService(userServices.ApiKey, userServices.ServiceName);
+                result = await _sqlCommandRepo.CreateNewUserService(userServices);
             }
 
             catch (ArgumentException args)
@@ -90,8 +91,11 @@ namespace apiTest1.Controllers
             }
 
 
-            return StatusHandler.okResult($"new { userServices.ServiceName} created", "success");
+            if (result)
+                return StatusHandler.okResult($"new { userServices.ServiceName} created", "success");
 
+            else
+                return StatusHandler.NotFound("error contact admin!", "error");  /// fix
         }
         #endregion
 
@@ -125,7 +129,6 @@ namespace apiTest1.Controllers
             try
             {
                 await _sqlCommandRepo.CreateUser(registerUser);
-                await _sqlCommandRepo.SaveChanges();
             }
 
             catch (SqlNullValueException)

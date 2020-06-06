@@ -14,6 +14,8 @@ namespace apiTest1.Data
         public DbSet<UserRegisterModel> RegisterUser { get; set; }
         public DbSet<UserServicesModel> UserServices { get; set; }
         public DbSet<UserServiceDataModel> UserData { get; set; }
+        public DbSet<DeviceSetupModel> SetupModels { get; set; }
+        public DbSet<MasterKeys> FieldMasterKey { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -39,8 +41,8 @@ namespace apiTest1.Data
 
                 table.HasOne(x => x.services)
                 .WithMany(x => x.servicesData)
-                .HasForeignKey(x => x.ServiceName)
-                .HasPrincipalKey(x => x.ServiceName)//<<== here is core code to let foreign key userId point to User.Id.
+                .HasForeignKey(x => x.DeviceId)
+                .HasPrincipalKey(x => x.DeviceId)//<<== here is core code to let foreign key userId point to User.Id.
                 .OnDelete(DeleteBehavior.Cascade);
             });
 

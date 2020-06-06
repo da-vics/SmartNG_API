@@ -3,6 +3,7 @@ using apiTest1.Helpers;
 using apiTest1.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -42,11 +43,13 @@ namespace apiTest1.Data
                 throw new ArgumentNullException(nameof(userRegister));
 
             #region data-Encryrtion
-            userRegister.PassWordHash = _dataEncryptionHelper.Encrypt(userRegister.PassWordHash, userRegister.Email); /// password
-            userRegister.ApiKeyId = _dataEncryptionHelper.Encrypt(userRegister.Email);  /// apikey
+
+            userRegister.PassWordHash = _dataEncryptionHelper.Encrypt(userRegister.PassWordHash, "smarterliving", userRegister.Email); /// password
+            userRegister.ApiKeyId = _dataEncryptionHelper.Encrypt(userRegister.Email, "smarterliving");  /// apikey
             #endregion
 
             await _commandDbContext.RegisterUser.AddAsync(userRegister);
+            await SaveChanges();
         }
 
         #endregion
@@ -89,7 +92,7 @@ namespace apiTest1.Data
             if (confirmUserDetails == null)
                 return string.Empty;
 
-            var result = await _commandDbContext.RegisterUser.FindAsync(confirmUserDetails.Email);
+            var result = await _commandDbContext.RegisterUser.FirstOrDefaultAsync(user => user.Email == confirmUserDetails.Email);
             if (result == null)
                 return string.Empty;
 
@@ -104,21 +107,39 @@ namespace apiTest1.Data
             }
         }
 
-        public override async Task<string> CreateNewUserService(string apikey, string NewServiceName)
+        public override async Task<bool> CreateNewUserService(UserServicesProfile userServices)
         {
 
-            if (apikey == null || NewServiceName == null)
-                return string.Empty;
+            if (string.IsNullOrEmpty(userServices.ApiKey) || string.IsNullOrEmpty(userServices.ServiceName))
+                return false;
 
-            var checkKey = await _commandDbContext.RegisterUser.FirstOrDefaultAsync(c => c.ApiKeyId == apikey);
+            var checkKey = await _commandDbContext.RegisterUser.FirstOrDefaultAsync(c => c.ApiKeyId == userServices.ApiKey);
+
+            try
+            {
+
+                var deviceCheck = await _commandDbContext.SetupModels.FindAsync(userServices.DeviceId);
+                if (deviceCheck == null)
+                    throw new ArgumentException("Device not Found!");
+            }
+
+            catch (ArgumentException)
+            {
+                throw;
+            }
+
+            //var check2 = from user in _commandDbContext.RegisterUser
+            //                           join service in _commandDbContext.UserServices
+            //                           on user.ApiKeyId equals apikey
+            //                           where service.ServiceName == NewServiceName
+            //                           select service;
 
 
             /// create a new user service by appending custome new plus email
-            var convertToDBName = $"{NewServiceName}_{checkKey.Email}";
-
+            var convertToDBName = $"{userServices.ServiceName}_{checkKey.Email}";
 
             if (checkKey == null)
-                return string.Empty;
+                return false;
 
             try
             {
@@ -132,37 +153,30 @@ namespace apiTest1.Data
                 throw;
             }
 
-            var newservice = new UserServicesModel { ApiKeyId = apikey, ServiceName = convertToDBName };
+            var newservice = new UserServicesModel { ApiKeyId = userServices.ApiKey, ServiceName = convertToDBName, DeviceId = userServices.DeviceId };
             await _commandDbContext.UserServices.AddAsync(newservice);
 
 
             _ = await this.SaveChanges();
 
 
-            return NewServiceName;
+            return true;
 
         }
 
         public override async Task<bool> AddUserServiceData(UserDataProfile userData)
         {
-            var checkdat = await _commandDbContext.RegisterUser.FirstOrDefaultAsync(data => data.ApiKeyId == userData.apikey);
-
-            if (checkdat == null)
-                return false;
-
-            var convertedservicename = $"{userData.ServiceName}_{ checkdat.Email}";
-
-            var servicenamecon = await _commandDbContext.UserServices.FirstOrDefaultAsync(dat => dat.ServiceName == convertedservicename);
+            var confirmID = await _commandDbContext.UserServices.FirstOrDefaultAsync(dat => dat.DeviceId == userData.DeviceId && dat.ApiKeyId == userData.apikey);
 
 
-            if (servicenamecon == null)
+            if (confirmID == null)
                 return false;
 
             var userServiceData = new UserServiceDataModel();
 
             #region setDataFields
             userServiceData.ApiKeyId = userData.apikey;
-            userServiceData.ServiceName = convertedservicename;
+            userServiceData.DeviceId = userData.DeviceId;
             userServiceData.ServiceData = userData.Userdata;
             userServiceData.DataInsertDat = DateTime.Now;
             #endregion
@@ -171,8 +185,39 @@ namespace apiTest1.Data
             _ = await this.SaveChanges();
 
             return true;
-
         }
 
+        public override async Task<string> CreateFieldDevice(FieldRegisterProfile fieldRegister)
+        {
+            if (fieldRegister == null)
+                return string.Empty;
+
+            fieldRegister.MasterKey = _dataEncryptionHelper.Encrypt(fieldRegister.MasterKey);
+
+            var check = await _commandDbContext.FieldMasterKey.FirstOrDefaultAsync(keys => keys.accessKey == fieldRegister.MasterKey);
+
+            if (check != null)
+            {
+                var newfieldDevice = new DeviceSetupModel();
+                var result = await _commandDbContext.SetupModels.AddAsync(newfieldDevice);
+                _ = await this.SaveChanges();
+
+                return result.Entity.Id.ToString();
+            }
+
+            return string.Empty;
+        }
+
+        public async override Task<string> GetFieldUserKey(FiledDeivceProfile deviceConfig)
+        {
+
+            var check = await _commandDbContext.UserServices.FirstOrDefaultAsync(c => c.DeviceId == deviceConfig.DeviceId);
+
+            if (check != null)
+                return check.ApiKeyId;
+
+            else return string.Empty;
+
+        }
     }
 }

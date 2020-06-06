@@ -10,8 +10,8 @@ using apiTest1.Data;
 namespace apiTest1.Migrations
 {
     [DbContext(typeof(apiDBContext))]
-    [Migration("20200604141515_davicsadd3")]
-    partial class davicsadd3
+    [Migration("20200606075304_updates3")]
+    partial class updates3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,33 @@ namespace apiTest1.Migrations
                 .HasAnnotation("ProductVersion", "3.1.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("apiTest1.Models.DeviceSetupModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SetupModels");
+                });
+
+            modelBuilder.Entity("apiTest1.Models.MasterKeys", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("accessKey")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FieldMasterKey");
+                });
 
             modelBuilder.Entity("apiTest1.Models.UserRegisterModel", b =>
                 {
@@ -69,20 +96,23 @@ namespace apiTest1.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("ApiKeyId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
                     b.Property<DateTime>("DataInsertDat")
                         .HasColumnType("datetime2");
+
+                    b.Property<Guid>("DeviceId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("ServiceData")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("ServiceName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(60)")
-                        .HasMaxLength(60);
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ServiceName");
+                    b.HasIndex("DeviceId");
 
                     b.ToTable("UserData");
                 });
@@ -98,6 +128,9 @@ namespace apiTest1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
+
+                    b.Property<Guid>("DeviceId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ServiceName")
                         .IsRequired()
@@ -118,8 +151,8 @@ namespace apiTest1.Migrations
                 {
                     b.HasOne("apiTest1.Models.UserServicesModel", "services")
                         .WithMany("servicesData")
-                        .HasForeignKey("ServiceName")
-                        .HasPrincipalKey("ServiceName")
+                        .HasForeignKey("DeviceId")
+                        .HasPrincipalKey("DeviceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

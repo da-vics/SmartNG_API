@@ -9,12 +9,11 @@ namespace apiTest1.Helpers
     public class DataEncryptionHelper
     {
 
-        public string Encrypt(string hashSource, string extraSalt = null)
+        public string Encrypt(string hashSource, string saltVar = null, string extraSalt = null)
         {
             string hash = string.Empty;
 
-            var saltVar = "smarterliving";
-            hashSource += saltVar + extraSalt;
+            hashSource += (saltVar + extraSalt);
 
             using (MD5 md5Hash = MD5.Create())
             {

@@ -40,6 +40,5 @@ namespace apiTest1.Models
         [MaxLength(30)]
         public string PhoneNumber { get; set; }
 
-
     }
 }

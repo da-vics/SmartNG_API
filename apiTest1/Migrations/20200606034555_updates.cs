@@ -3,10 +3,23 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace apiTest1.Migrations
 {
-    public partial class davicsadd3 : Migration
+    public partial class updates : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "FieldMasterKey",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    accessKey = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FieldMasterKey", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "RegisterUser",
                 columns: table => new
@@ -25,13 +38,25 @@ namespace apiTest1.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "SetupModels",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SetupModels", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserServices",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ServiceName = table.Column<string>(maxLength: 60, nullable: false),
-                    ApiKeyId = table.Column<string>(maxLength: 100, nullable: false)
+                    ApiKeyId = table.Column<string>(maxLength: 100, nullable: false),
+                    DeviceId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -53,7 +78,8 @@ namespace apiTest1.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ServiceName = table.Column<string>(maxLength: 60, nullable: false),
                     ServiceData = table.Column<decimal>(nullable: false),
-                    DataInsertDat = table.Column<DateTime>(nullable: false)
+                    DataInsertDat = table.Column<DateTime>(nullable: false),
+                    ApiKeyId = table.Column<string>(maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -97,6 +123,12 @@ namespace apiTest1.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "FieldMasterKey");
+
+            migrationBuilder.DropTable(
+                name: "SetupModels");
+
             migrationBuilder.DropTable(
                 name: "UserData");
 

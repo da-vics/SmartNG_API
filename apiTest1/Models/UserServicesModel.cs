@@ -11,7 +11,6 @@ namespace apiTest1.Models
 {
     public class UserServicesModel
     {
-
         [Key]
         public int Id { get; set; }
 
@@ -19,15 +18,16 @@ namespace apiTest1.Models
         [MaxLength(60)]
 
         public string ServiceName { get; set; }
-        public ICollection<UserServiceDataModel> servicesData { get; set; }
+
 
         [Required]
         [MaxLength(100)]
         public string ApiKeyId { get; set; }
 
-        public virtual UserRegisterModel Users { get; set; }
+        public UserRegisterModel Users { get; set; }
 
-
-
+        [Required]
+        public Guid DeviceId { get; set; }
+        public ICollection<UserServiceDataModel> servicesData { get; set; }
     }
 }

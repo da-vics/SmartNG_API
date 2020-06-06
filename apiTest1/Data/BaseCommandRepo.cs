@@ -18,7 +18,11 @@ namespace apiTest1.Data
 
         public abstract Task CreateUser(UserRegisterModel RegNewUser);
 
-        public abstract Task<string> CreateNewUserService(string apikey, string NewServiceName);
+        public abstract Task<string> GetFieldUserKey(FiledDeivceProfile deviceid);
+
+        public abstract Task<string> CreateFieldDevice(FieldRegisterProfile fieldRegister);
+
+        public abstract Task<bool> CreateNewUserService(UserServicesProfile userServices);
 
         public abstract Task<string> VerifyUser(UserLoginProfile confirmUserDetails);
 
