@@ -28,6 +28,41 @@ namespace apiTest1.Controllers
         #endregion
 
 
+        #region GetSingleServiceData
+
+        [HttpPost]
+        [Route("servicedata/getdata")]
+        public async Task<IActionResult> GetUserServiceData(GetUserDataProfile getUserData)
+        {
+            var result = await _sqlCommandRepo.GetUserServiceData(getUserData);
+
+            if (result == null)
+                return StatusHandler.NotFound("Invalid Opeartion", "error");
+
+            return Ok(result);
+        }
+
+        #endregion
+
+
+        #region GetCollctionServiceData
+
+        [HttpPost]
+        [Route("servicedata/getcollection")]
+        public async Task<IActionResult> GetCollectionUserServiceData(GetCollectionUserDataProfile getUserData)
+        {
+            var result = await _sqlCommandRepo.GetUserCollatedServiceData(getUserData);
+
+
+            if (result == null || result.Count <= 0)
+                return StatusHandler.NotFound("Invalid Opeartion", "error");
+
+            return Ok(result);
+        }
+
+        #endregion
+
+
         #region UserUploadServiceData
 
         [HttpPost]

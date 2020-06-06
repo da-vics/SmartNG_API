@@ -3,6 +3,8 @@ using apiTest1.Helpers;
 using apiTest1.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -40,7 +42,7 @@ namespace apiTest1.Data
         public override async Task CreateUser(UserRegisterModel userRegister)
         {
             if (userRegister == null)
-                throw new ArgumentNullException(nameof(userRegister));
+                throw new ArgumentNullException("null parameter Detected!");
 
             #region data-Encryrtion
 
@@ -55,11 +57,46 @@ namespace apiTest1.Data
         #endregion
 
 
-        public override Task<UserServiceDataModel> GetUserData()
+        public override async Task<List<UserDataProfileConsumption>> GetUserCollatedServiceData(GetCollectionUserDataProfile getUserData)
         {
-            throw new NotImplementedException();
-        }
+            CultureInfo MyCultureInfo = new CultureInfo("de-DE");
+            DateTime dateTime;
+            bool checkdate = DateTime.TryParse(getUserData.setRecord, out dateTime);
 
+            if (checkdate == false)
+                return null;
+
+            IQueryable<UserServiceDataModel> result = null;
+
+            await Task.Run(() =>
+            {
+                result = from data in _commandDbContext.UserData
+                         where data.ApiKeyId == getUserData.apikey && data.DeviceId == getUserData.DeviceId && data.DataInsertDat >= dateTime
+                         orderby data.DataInsertDat descending
+                         select data;
+
+            });
+
+            if (result == null)
+                return null;
+
+            else
+            {
+                List<UserDataProfileConsumption> convertResult = new List<UserDataProfileConsumption>();
+
+                await Task.Run(() =>
+                {
+                    foreach (var data in result)
+                    {
+                        convertResult.Add(new UserDataProfileConsumption { Userdata = data.ServiceData, DateInserted = data.DataInsertDat.ToString() });
+                    }
+
+                });
+
+                return convertResult;
+            }
+
+        }
 
         #region Save Changes to DataBase
         public override async Task<bool> SaveChanges()
@@ -217,6 +254,26 @@ namespace apiTest1.Data
                 return check.ApiKeyId;
 
             else return string.Empty;
+
+        }
+
+        public override async Task<UserDataProfileConsumption> GetUserServiceData(GetUserDataProfile getUserData)
+        {
+
+            List<UserServiceDataModel> result = new List<UserServiceDataModel>();
+
+            await Task.Run(() =>
+             {
+                 result = (from data in _commandDbContext.UserData
+                           where data.ApiKeyId == getUserData.apikey && data.DeviceId == getUserData.DeviceId
+                           orderby data.Id descending
+                           select data).Take(1).ToList<UserServiceDataModel>();
+             });
+
+            if (result.Count <= 0)
+                return null;
+
+            return new UserDataProfileConsumption { Userdata = result[0].ServiceData, DateInserted = result[0].DataInsertDat.ToString() };
 
         }
     }
