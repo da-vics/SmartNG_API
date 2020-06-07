@@ -28,6 +28,6 @@ namespace apiTest1.Models
 
         [Required]
         public Guid DeviceId { get; set; }
-        public ICollection<UserServiceDataModel> servicesData { get; set; }
+        public ICollection<UserServiceDataModel> ServicesData { get; set; }
     }
 }

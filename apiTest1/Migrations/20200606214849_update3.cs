@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace apiTest1.Migrations
+namespace SmartNG.Migrations
 {
-    public partial class updates3 : Migration
+    public partial class update3 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace apiTest1.Migrations
+namespace SmartNG.Migrations
 {
     public partial class updates : Migration
     {
@@ -13,7 +13,7 @@ namespace apiTest1.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    accessKey = table.Column<string>(nullable: false)
+                    AccessKey = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -61,7 +61,7 @@ namespace apiTest1.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserServices", x => x.Id);
-                    table.UniqueConstraint("AK_UserServices_ServiceName", x => x.ServiceName);
+                    table.UniqueConstraint("AK_UserServices_DeviceId", x => x.DeviceId);
                     table.ForeignKey(
                         name: "FK_UserServices_RegisterUser_ApiKeyId",
                         column: x => x.ApiKeyId,
@@ -76,7 +76,7 @@ namespace apiTest1.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ServiceName = table.Column<string>(maxLength: 60, nullable: false),
+                    DeviceId = table.Column<Guid>(nullable: false),
                     ServiceData = table.Column<decimal>(nullable: false),
                     DataInsertDat = table.Column<DateTime>(nullable: false),
                     ApiKeyId = table.Column<string>(maxLength: 100, nullable: false)
@@ -85,10 +85,10 @@ namespace apiTest1.Migrations
                 {
                     table.PrimaryKey("PK_UserData", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserData_UserServices_ServiceName",
-                        column: x => x.ServiceName,
+                        name: "FK_UserData_UserServices_DeviceId",
+                        column: x => x.DeviceId,
                         principalTable: "UserServices",
-                        principalColumn: "ServiceName",
+                        principalColumn: "DeviceId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -105,9 +105,9 @@ namespace apiTest1.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserData_ServiceName",
+                name: "IX_UserData_DeviceId",
                 table: "UserData",
-                column: "ServiceName");
+                column: "DeviceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserServices_ApiKeyId",

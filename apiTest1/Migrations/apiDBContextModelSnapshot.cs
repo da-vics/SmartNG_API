@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using apiTest1.Data;
 
-namespace apiTest1.Migrations
+namespace SmartNG.Migrations
 {
     [DbContext(typeof(apiDBContext))]
     partial class apiDBContextModelSnapshot : ModelSnapshot
@@ -37,7 +37,7 @@ namespace apiTest1.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("accessKey")
+                    b.Property<string>("AccessKey")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -147,8 +147,8 @@ namespace apiTest1.Migrations
 
             modelBuilder.Entity("apiTest1.Models.UserServiceDataModel", b =>
                 {
-                    b.HasOne("apiTest1.Models.UserServicesModel", "services")
-                        .WithMany("servicesData")
+                    b.HasOne("apiTest1.Models.UserServicesModel", "Services")
+                        .WithMany("ServicesData")
                         .HasForeignKey("DeviceId")
                         .HasPrincipalKey("DeviceId")
                         .OnDelete(DeleteBehavior.Cascade)

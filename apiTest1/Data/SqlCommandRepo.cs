@@ -231,7 +231,7 @@ namespace apiTest1.Data
 
             fieldRegister.MasterKey = _dataEncryptionHelper.Encrypt(fieldRegister.MasterKey);
 
-            var check = await _commandDbContext.FieldMasterKey.FirstOrDefaultAsync(keys => keys.accessKey == fieldRegister.MasterKey);
+            var check = await _commandDbContext.FieldMasterKey.FirstOrDefaultAsync(keys => keys.AccessKey == fieldRegister.MasterKey);
 
             if (check != null)
             {

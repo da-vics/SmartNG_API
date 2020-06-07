@@ -39,8 +39,8 @@ namespace apiTest1.Data
             modelBuilder.Entity<UserServiceDataModel>(table =>
             {
 
-                table.HasOne(x => x.services)
-                .WithMany(x => x.servicesData)
+                table.HasOne(x => x.Services)
+                .WithMany(x => x.ServicesData)
                 .HasForeignKey(x => x.DeviceId)
                 .HasPrincipalKey(x => x.DeviceId)//<<== here is core code to let foreign key userId point to User.Id.
                 .OnDelete(DeleteBehavior.Cascade);
@@ -50,7 +50,7 @@ namespace apiTest1.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=apiTest;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer("Data Source=tcp:smartngdbserver.database.windows.net,1433;Initial Catalog=SmartNG_db;User Id=SmartNG@smartngdbserver;Password=Gamesvic1");
 
         }
     }

@@ -176,9 +176,9 @@ namespace apiTest1.Controllers
                 return StatusHandler.NotFound(args.Message, "Error");
             }
 
-            catch (Exception)
+            catch (Exception args)
             {
-                return StatusHandler.NotFound("Registration Error Contact Admin", "Error");
+                return StatusHandler.NotFound(args.Message, "Error");
             }
 
 

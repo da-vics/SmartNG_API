@@ -15,7 +15,7 @@ namespace apiTest1.Models
 
         [Required]
         public Guid DeviceId { get; set; }
-        public UserServicesModel services { get; set; }
+        public UserServicesModel Services { get; set; }
 
         [Required]
         public decimal ServiceData { get; set; }

@@ -19,7 +19,7 @@ namespace apiTest1.Models
         public int Id { get; set; }
 
         [Required]
-        public string accessKey { get; set; }
+        public string AccessKey { get; set; }
 
     }
 }

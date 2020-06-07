@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using apiTest1.Data;
 
-namespace apiTest1.Migrations
+namespace SmartNG.Migrations
 {
     [DbContext(typeof(apiDBContext))]
-    [Migration("20200606034555_updates")]
-    partial class updates
+    [Migration("20200606222118_update5")]
+    partial class update5
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -39,7 +39,7 @@ namespace apiTest1.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("accessKey")
+                    b.Property<string>("AccessKey")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -104,17 +104,15 @@ namespace apiTest1.Migrations
                     b.Property<DateTime>("DataInsertDat")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("DeviceId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<decimal>("ServiceData")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("ServiceName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(60)")
-                        .HasMaxLength(60);
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ServiceName");
+                    b.HasIndex("DeviceId");
 
                     b.ToTable("UserData");
                 });
@@ -151,10 +149,10 @@ namespace apiTest1.Migrations
 
             modelBuilder.Entity("apiTest1.Models.UserServiceDataModel", b =>
                 {
-                    b.HasOne("apiTest1.Models.UserServicesModel", "services")
-                        .WithMany("servicesData")
-                        .HasForeignKey("ServiceName")
-                        .HasPrincipalKey("ServiceName")
+                    b.HasOne("apiTest1.Models.UserServicesModel", "Services")
+                        .WithMany("ServicesData")
+                        .HasForeignKey("DeviceId")
+                        .HasPrincipalKey("DeviceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

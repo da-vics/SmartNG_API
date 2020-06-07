@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using apiTest1.Data;
 
-namespace apiTest1.Migrations
+namespace SmartNG.Migrations
 {
     [DbContext(typeof(apiDBContext))]
-    [Migration("20200606075304_updates3")]
-    partial class updates3
+    [Migration("20200606213453_updates")]
+    partial class updates
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -39,7 +39,7 @@ namespace apiTest1.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("accessKey")
+                    b.Property<string>("AccessKey")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -149,8 +149,8 @@ namespace apiTest1.Migrations
 
             modelBuilder.Entity("apiTest1.Models.UserServiceDataModel", b =>
                 {
-                    b.HasOne("apiTest1.Models.UserServicesModel", "services")
-                        .WithMany("servicesData")
+                    b.HasOne("apiTest1.Models.UserServicesModel", "Services")
+                        .WithMany("ServicesData")
                         .HasForeignKey("DeviceId")
                         .HasPrincipalKey("DeviceId")
                         .OnDelete(DeleteBehavior.Cascade)
