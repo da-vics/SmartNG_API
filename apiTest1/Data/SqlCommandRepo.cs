@@ -168,12 +168,24 @@ namespace apiTest1.Data
             if (string.IsNullOrEmpty(userServices.ApiKey) || string.IsNullOrEmpty(userServices.ServiceName))
                 return false;
 
-            var checkKey = await _commandDbContext.RegisterUser.FirstOrDefaultAsync(c => c.ApiKeyId == userServices.ApiKey);
+            UserRegisterModel checkKey = null;
 
             try
             {
+                checkKey = await _commandDbContext.RegisterUser.FirstOrDefaultAsync(c => c.ApiKeyId == userServices.ApiKey);
+                if (checkKey == null)
+                    throw new ArgumentException("Access denied user not found!");
+            }
 
-                var deviceCheck = await _commandDbContext.SetupModels.FindAsync(userServices.DeviceId);
+            catch (ArgumentException)
+            {
+                throw;
+            }
+
+
+            try
+            {
+                var deviceCheck = await _commandDbContext.SetupModels.FirstOrDefaultAsync(device => device.Id == userServices.DeviceId);
                 if (deviceCheck == null)
                     throw new ArgumentException("Device not Found!");
             }
@@ -192,9 +204,6 @@ namespace apiTest1.Data
 
             /// create a new user service by appending custome new plus email
             var convertToDBName = $"{userServices.ServiceName}_{checkKey.Email}";
-
-            if (checkKey == null)
-                return false;
 
             try
             {
@@ -266,12 +275,20 @@ namespace apiTest1.Data
         public async override Task<string> GetFieldUserKey(FiledDeivceProfile deviceConfig)
         {
 
-            var check = await _commandDbContext.UserServices.FirstOrDefaultAsync(c => c.DeviceId == deviceConfig.DeviceId);
+            UserServicesModel check = null;
+            try
+            {
+                check = await _commandDbContext.UserServices.FirstOrDefaultAsync(c => c.DeviceId == deviceConfig.DeviceId);
+                if (check == null)
+                    throw new ArgumentException($"no user assigned to {deviceConfig.DeviceId}");
+            }
 
-            if (check != null)
-                return check.ApiKeyId;
+            catch (ArgumentException)
+            {
+                throw;
+            }
 
-            else return string.Empty;
+            return check.ApiKeyId;
 
         }
 

@@ -64,7 +64,16 @@ namespace apiTest1.Controllers
             if (deviceid.DeviceId == null || deviceid == null)
                 return StatusHandler.NotFound("null parameter detected", "error");
 
-            var result = await _sqlCommandRepo.GetFieldUserKey(deviceid);
+            string result = string.Empty;
+            try
+            {
+                result = await _sqlCommandRepo.GetFieldUserKey(deviceid);
+            }
+
+            catch (ArgumentException args)
+            {
+                return StatusHandler.NotFound(args.Message, "error");
+            }
 
             if (string.IsNullOrEmpty(result))
                 return StatusHandler.NotFound("access denied", "error");
