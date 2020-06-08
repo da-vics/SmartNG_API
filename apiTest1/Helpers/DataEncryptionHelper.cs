@@ -46,7 +46,7 @@ namespace apiTest1.Helpers
         }
 
         // Verify a hash against a string.
-        public bool VerifyMd5Hash(string input, string hash, string extraSalt = null)
+        public bool VerifyMd5Hash(string input, string hash, string saltVar = null, string extraSalt = null)
         {
 
             string hashOfInput = Encrypt(input, extraSalt);

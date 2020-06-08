@@ -140,7 +140,7 @@ namespace apiTest1.Controllers
         [Route("login")]
         public async Task<IActionResult> AdminLogin([FromBody]UserLoginProfile userLogin)
         {
-            if (User == null)
+            if (userLogin == null || userLogin.Email == null)
                 return StatusHandler.NotFound("Null Parameter Detected", "error");
             var Loginresult = await _sqlCommandRepo.VerifyUser(userLogin);
 
@@ -164,6 +164,10 @@ namespace apiTest1.Controllers
             try
             {
                 await _sqlCommandRepo.CreateUser(registerUser);
+            }
+            catch (ArgumentException args)
+            {
+                return StatusHandler.NotFound(args.Message, "Error");
             }
 
             catch (SqlNullValueException)

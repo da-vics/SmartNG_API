@@ -44,6 +44,19 @@ namespace apiTest1.Data
             if (userRegister == null)
                 throw new ArgumentNullException("null parameter Detected!");
 
+            try
+            {
+                var check = _commandDbContext.RegisterUser.FirstOrDefaultAsync(user => user.Email == userRegister.Email);
+                if (check != null)
+                    throw new ArgumentException($"a user with this email {userRegister.Email} exsits");
+            }
+
+            catch (ArgumentException)
+            {
+                throw;
+            }
+
+
             #region data-Encryrtion
 
             userRegister.PassWordHash = _dataEncryptionHelper.Encrypt(userRegister.PassWordHash, "smarterliving", userRegister.Email); /// password
@@ -133,7 +146,7 @@ namespace apiTest1.Data
             if (result == null)
                 return string.Empty;
 
-            if (_dataEncryptionHelper.VerifyMd5Hash(confirmUserDetails.Password, result.PassWordHash, result.Email))
+            if (_dataEncryptionHelper.VerifyMd5Hash(confirmUserDetails.Password, result.PassWordHash, "smarterliving", result.Email))
             {
                 return result.ApiKeyId;
             }
