@@ -8,7 +8,7 @@ using apiTest1.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
-
+using SmartNG.DataProfiles;
 
 namespace apiTest1.Controllers
 {
@@ -159,7 +159,7 @@ namespace apiTest1.Controllers
         #region UserRegister
         [HttpPost]
         [Route("Register")]
-        public async Task<IActionResult> UserRegistration([FromBody]UserRegisterModel registerUser)
+        public async Task<IActionResult> UserRegistration([FromBody]UserRegisterProfile registerUser)
         {
             try
             {

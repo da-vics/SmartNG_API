@@ -2,6 +2,7 @@
 using apiTest1.Helpers;
 using apiTest1.Models;
 using Microsoft.EntityFrameworkCore;
+using SmartNG.DataProfiles;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -39,14 +40,14 @@ namespace apiTest1.Data
 
 
         #region CreateNewUser Function
-        public override async Task CreateUser(UserRegisterModel userRegister)
+        public override async Task CreateUser(UserRegisterProfile userRegister)
         {
             if (userRegister == null)
                 throw new ArgumentNullException("null parameter Detected!");
 
             try
             {
-                var check = _commandDbContext.RegisterUser.FirstOrDefaultAsync(user => user.Email == userRegister.Email);
+                var check = await _commandDbContext.RegisterUser.FirstOrDefaultAsync(user => user.Email == userRegister.Email);
                 if (check != null)
                     throw new ArgumentException($"a user with this email {userRegister.Email} exsits");
             }
@@ -56,14 +57,18 @@ namespace apiTest1.Data
                 throw;
             }
 
+            var newUser = new UserRegisterModel
+            {
+                Email = userRegister.Email,
+                ApiKeyId = _dataEncryptionHelper.Encrypt(userRegister.Email, "smarterliving"),
+                PassWordHash = _dataEncryptionHelper.Encrypt(userRegister.PassWordHash, "smarterliving", userRegister.Email),
+                HomeAddress = userRegister.HomeAddress,
+                PhoneNumber = userRegister.PhoneNumber,
+                FullName = userRegister.FullName
+            };
 
-            #region data-Encryrtion
 
-            userRegister.PassWordHash = _dataEncryptionHelper.Encrypt(userRegister.PassWordHash, "smarterliving", userRegister.Email); /// password
-            userRegister.ApiKeyId = _dataEncryptionHelper.Encrypt(userRegister.Email, "smarterliving");  /// apikey
-            #endregion
-
-            await _commandDbContext.RegisterUser.AddAsync(userRegister);
+            await _commandDbContext.RegisterUser.AddAsync(newUser);
             await SaveChanges();
         }
 

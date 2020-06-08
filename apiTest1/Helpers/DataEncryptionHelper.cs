@@ -49,7 +49,7 @@ namespace apiTest1.Helpers
         public bool VerifyMd5Hash(string input, string hash, string saltVar = null, string extraSalt = null)
         {
 
-            string hashOfInput = Encrypt(input, extraSalt);
+            string hashOfInput = Encrypt(input, saltVar, extraSalt);
 
             // Create a StringComparer an compare the hashes.
             StringComparer comparer = StringComparer.OrdinalIgnoreCase;

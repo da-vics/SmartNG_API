@@ -2,6 +2,7 @@
 using apiTest1.Models;
 using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using SmartNG.DataProfiles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace apiTest1.Data
 
         public abstract Task<bool> AddUserServiceData(UserDataProfile userData);
 
-        public abstract Task CreateUser(UserRegisterModel RegNewUser);
+        public abstract Task CreateUser(UserRegisterProfile RegNewUser);
 
         public abstract Task<string> GetFieldUserKey(FiledDeivceProfile deviceid);
 
