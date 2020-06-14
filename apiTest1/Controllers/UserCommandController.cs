@@ -27,7 +27,6 @@ namespace apiTest1.Controllers
         }
         #endregion
 
-
         #region GetSingleServiceData
 
         [HttpPost]
