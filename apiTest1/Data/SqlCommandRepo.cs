@@ -75,6 +75,8 @@ namespace apiTest1.Data
         #endregion
 
 
+        #region GetCollectionOfUserData
+
         public override async Task<List<UserDataProfileConsumption>> GetUserCollatedServiceData(GetCollectionUserDataProfile getUserData)
         {
             CultureInfo MyCultureInfo = new CultureInfo("de-DE");
@@ -116,6 +118,9 @@ namespace apiTest1.Data
 
         }
 
+        #endregion
+
+
         #region Save Changes to DataBase
         public override async Task<bool> SaveChanges()
         {
@@ -141,6 +146,9 @@ namespace apiTest1.Data
         }
         #endregion
 
+
+        #region VerifyUser
+
         public override async Task<string> VerifyUser(UserLoginProfile confirmUserDetails)
         {
 
@@ -161,6 +169,11 @@ namespace apiTest1.Data
                 return string.Empty;
             }
         }
+
+        #endregion
+
+
+        #region CreateNewService
 
         public override async Task<bool> CreateNewUserService(UserServicesProfile userServices)
         {
@@ -220,6 +233,9 @@ namespace apiTest1.Data
 
         }
 
+        #endregion
+
+        #region AddUserServiceData
 
         public override async Task<bool> AddUserServiceData(UserDataProfile userData)
         {
@@ -244,6 +260,10 @@ namespace apiTest1.Data
             return true;
         }
 
+        #endregion
+
+
+        #region CreateNewFieldDevice
 
         public override async Task<string> CreateFieldDevice(FieldRegisterProfile fieldRegister)
         {
@@ -266,6 +286,9 @@ namespace apiTest1.Data
             return string.Empty;
         }
 
+        #endregion
+
+        #region GetFIeldKey
 
         public async override Task<DeviceCalibrationProfile> GetFieldUserKey(FiledDeivceProfile deviceConfig)
         {
@@ -294,6 +317,9 @@ namespace apiTest1.Data
 
         }
 
+        #endregion
+
+        #region GetUserServiceData
 
         public override async Task<UserDataProfileConsumption> GetUserServiceData(GetUserDataProfile getUserData)
         {
@@ -315,6 +341,10 @@ namespace apiTest1.Data
 
         }
 
+        #endregion
+
+        #region UpdateUserService
+
         public override async Task<bool> UpdateUserService(UserServicesProfile userServices)
         {
 
@@ -331,7 +361,6 @@ namespace apiTest1.Data
             {
                 throw;
             }
-
 
             var convertToDBName = $"{userServices.ServiceName}_{checkKey.Email}";
 
@@ -357,5 +386,7 @@ namespace apiTest1.Data
 
             return true;
         }
+
+        #endregion
     }
 }
