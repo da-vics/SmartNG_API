@@ -19,7 +19,7 @@ namespace apiTest1.Data
 
         public abstract Task CreateUser(UserRegisterProfile RegNewUser);
 
-        public abstract Task<string> GetFieldUserKey(FiledDeivceProfile deviceid);
+        public abstract Task<DeviceCalibrationProfile> GetFieldUserKey(FiledDeivceProfile deviceid);
 
         public abstract Task<string> CreateFieldDevice(FieldRegisterProfile fieldRegister);
 

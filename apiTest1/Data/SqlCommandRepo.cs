@@ -228,6 +228,7 @@ namespace apiTest1.Data
 
         }
 
+
         public override async Task<bool> AddUserServiceData(UserDataProfile userData)
         {
             var confirmID = await _commandDbContext.UserServices.FirstOrDefaultAsync(dat => dat.DeviceId == userData.DeviceId && dat.ApiKeyId == userData.apikey);
@@ -251,6 +252,7 @@ namespace apiTest1.Data
             return true;
         }
 
+
         public override async Task<string> CreateFieldDevice(FieldRegisterProfile fieldRegister)
         {
             if (fieldRegister == null)
@@ -272,7 +274,8 @@ namespace apiTest1.Data
             return string.Empty;
         }
 
-        public async override Task<string> GetFieldUserKey(FiledDeivceProfile deviceConfig)
+
+        public async override Task<DeviceCalibrationProfile> GetFieldUserKey(FiledDeivceProfile deviceConfig)
         {
 
             UserServicesModel check = null;
@@ -288,9 +291,17 @@ namespace apiTest1.Data
                 throw;
             }
 
-            return check.ApiKeyId;
+            DeviceCalibrationProfile deviceCalibration = new DeviceCalibrationProfile();
+
+
+            return new DeviceCalibrationProfile()
+            {
+                ApiKey = check.ApiKeyId,
+                DeviceType = check.DeviceType
+            };
 
         }
+
 
         public override async Task<UserDataProfileConsumption> GetUserServiceData(GetUserDataProfile getUserData)
         {

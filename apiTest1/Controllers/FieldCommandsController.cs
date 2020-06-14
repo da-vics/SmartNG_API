@@ -5,6 +5,7 @@ using apiTest1.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SmartNG.DataProfiles;
 using System;
 using System.Threading.Tasks;
 
@@ -108,7 +109,7 @@ namespace apiTest1.Controllers
             if (deviceid.DeviceId == null || deviceid == null)
                 return StatusHandler.NotFound("null parameter detected", "error");
 
-            string result = string.Empty;
+            DeviceCalibrationProfile result = null;
             try
             {
                 result = await _sqlCommandRepo.GetFieldUserKey(deviceid);
@@ -119,11 +120,11 @@ namespace apiTest1.Controllers
                 return StatusHandler.NotFound(args.Message, "error");
             }
 
-            if (string.IsNullOrEmpty(result))
+            if (result == null)
                 return StatusHandler.NotFound("access denied", "error");
 
             else
-                return new OkObjectResult(new { Key = result, status = "success" });
+                return new OkObjectResult(result);
 
         }
 
