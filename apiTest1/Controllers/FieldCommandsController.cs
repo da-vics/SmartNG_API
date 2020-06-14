@@ -4,6 +4,7 @@ using apiTest1.Handlers;
 using apiTest1.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 
@@ -27,6 +28,7 @@ namespace apiTest1.Controllers
             return Content("Smart Controller");
         }
 
+        #region AddNewDevice
         [HttpPost]
         [Route("RegisterFieldDevice")]
         public async Task<IActionResult> AdminLogin([FromBody]FieldRegisterProfile fieldRegister)
@@ -57,6 +59,48 @@ namespace apiTest1.Controllers
                 return new OkObjectResult(new { DeviceID = result, status = "success" });
         }
 
+        #endregion
+
+
+        #region UserUploadServiceData
+
+        [HttpPost]
+        [Route("userdataupload")]
+        public async Task<IActionResult> UploadUserServiceData([FromBody] UserDataProfile userData)
+        {
+            if (userData == null)
+                return StatusHandler.NotFound("Null Parameter Detected", "error");
+
+            bool checkResult = false;
+            try
+            {
+                checkResult = await _sqlCommandRepo.AddUserServiceData(userData);
+            }
+
+            catch (NullReferenceException args)
+            {
+                return StatusHandler.NotFound(args.Message, "error");
+            }
+
+            catch (DbUpdateException args)
+            {
+                return StatusHandler.NotFound(args.Message, "error");
+            }
+
+            if (checkResult == false)
+                return StatusHandler.NotFound("Service Error", "error");
+
+            else
+            {
+                return StatusHandler.okResult($"new serviceData Added For {userData.DeviceId}", "success");
+            }
+        }
+
+        #endregion
+
+
+        #region GetAssignedUser
+
         [HttpPost]
         [Route("getassociateduser")]
         public async Task<IActionResult> AdminGetAssociateUser([FromBody]FiledDeivceProfile deviceid)
@@ -83,5 +127,8 @@ namespace apiTest1.Controllers
 
         }
 
+        #endregion
+
     }
+
 }

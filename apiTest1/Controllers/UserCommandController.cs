@@ -62,43 +62,6 @@ namespace apiTest1.Controllers
         #endregion
 
 
-        #region UserUploadServiceData
-
-        [HttpPost]
-        [Route("userdataupload")]
-        public async Task<IActionResult> UploadUserServiceData([FromBody] UserDataProfile userData)
-        {
-            if (userData == null)
-                return StatusHandler.NotFound("Null Parameter Detected", "error");
-
-            bool checkResult = false;
-            try
-            {
-                checkResult = await _sqlCommandRepo.AddUserServiceData(userData);
-            }
-
-            catch (NullReferenceException args)
-            {
-                return StatusHandler.NotFound(args.Message, "error");
-            }
-
-            catch (DbUpdateException args)
-            {
-                return StatusHandler.NotFound(args.Message, "error");
-            }
-
-            if (checkResult == false)
-                return StatusHandler.NotFound("Service Error", "error");
-
-            else
-            {
-                return StatusHandler.okResult($"new serviceData Added For {userData.DeviceId}", "success");
-            }
-        }
-
-        #endregion
-
-
         #region UserCreateNewService
 
         [HttpPost]
