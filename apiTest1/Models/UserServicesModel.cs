@@ -19,6 +19,10 @@ namespace apiTest1.Models
 
         public string ServiceName { get; set; }
 
+        [Required]
+        public short DeviceType { get; set; }
+
+        public short? DeviceStatus { get; set; } = null;
 
         [Required]
         [MaxLength(100)]
