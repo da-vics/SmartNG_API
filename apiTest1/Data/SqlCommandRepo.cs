@@ -349,16 +349,9 @@ namespace apiTest1.Data
                 throw;
             }
 
-            var newservice = new UserServicesModel
-            {
-                Id = checkService.Id,
-                ApiKeyId = userServices.ApiKey,
-                ServiceName = convertToDBName,
-                DeviceId = userServices.DeviceId,
-                DeviceType = userServices.DeviceType
-            };
+            checkService.DeviceType = userServices.DeviceType;
 
-            _commandDbContext.UserServices.Update(newservice);
+            _commandDbContext.UserServices.Update(checkService);
 
             _ = await this.SaveChanges();
 
