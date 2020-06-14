@@ -25,6 +25,8 @@ namespace apiTest1.Data
 
         public abstract Task<bool> CreateNewUserService(UserServicesProfile userServices);
 
+        public abstract Task<bool> UpdateUserService(UserServicesProfile userServices);
+
         public abstract Task<string> VerifyUser(UserLoginProfile confirmUserDetails);
 
         public abstract Task<List<UserDataProfileConsumption>> GetUserCollatedServiceData(GetCollectionUserDataProfile getUserData);

@@ -195,14 +195,6 @@ namespace apiTest1.Data
                 throw;
             }
 
-            //var check2 = from user in _commandDbContext.RegisterUser
-            //                           join service in _commandDbContext.UserServices
-            //                           on user.ApiKeyId equals apikey
-            //                           where service.ServiceName == NewServiceName
-            //                           select service;
-
-
-            /// create a new user service by appending custome new plus email
             var convertToDBName = $"{userServices.ServiceName}_{checkKey.Email}";
 
             try
@@ -321,6 +313,56 @@ namespace apiTest1.Data
 
             return new UserDataProfileConsumption { Userdata = result[0].ServiceData, DateInserted = result[0].DataInsertDat.ToString() };
 
+        }
+
+        public override async Task<bool> UpdateUserService(UserServicesProfile userServices)
+        {
+
+            UserRegisterModel checkKey = null;
+
+            try
+            {
+                checkKey = await _commandDbContext.RegisterUser.FirstOrDefaultAsync(c => c.ApiKeyId == userServices.ApiKey);
+                if (checkKey == null)
+                    throw new ArgumentException("Access denied user not found!");
+            }
+
+            catch (ArgumentException)
+            {
+                throw;
+            }
+
+
+            var convertToDBName = $"{userServices.ServiceName}_{checkKey.Email}";
+
+            UserServicesModel checkService = null;
+
+            try
+            {
+                checkService = await _commandDbContext.UserServices.FirstOrDefaultAsync(c => c.DeviceId == userServices.DeviceId);
+                if (checkService != null)
+                    throw new ArgumentException("Device not Found!");
+            }
+
+            catch (ArgumentException)
+            {
+                throw;
+            }
+
+            var newservice = new UserServicesModel
+            {
+                Id = checkService.Id,
+                ApiKeyId = userServices.ApiKey,
+                ServiceName = convertToDBName,
+                DeviceId = userServices.DeviceId,
+                DeviceType = userServices.DeviceType
+            };
+
+            _commandDbContext.UserServices.Update(newservice);
+
+            _ = await this.SaveChanges();
+
+            return true;
         }
     }
 }

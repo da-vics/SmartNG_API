@@ -27,6 +27,7 @@ namespace apiTest1.Controllers
         }
         #endregion
 
+
         #region GetSingleServiceData
 
         [HttpPost]
@@ -57,6 +58,41 @@ namespace apiTest1.Controllers
                 return StatusHandler.NotFound("Invalid Opeartion", "error");
 
             return Ok(result);
+        }
+
+        #endregion
+
+
+        #region UpdateUserService
+        [HttpPost]
+        [Route("updateuserservice")]
+        public async Task<IActionResult> UpdateUserService(UserServicesProfile userServices)
+        {
+            if (string.IsNullOrEmpty(userServices.ServiceName) || userServices == null)
+                return StatusHandler.NotFound("null Parameter Detected", "error");
+
+            bool result = false;
+            try
+            {
+                result = await _sqlCommandRepo.UpdateUserService(userServices);
+            }
+
+            catch (ArgumentException args)
+            {
+                return StatusHandler.NotFound(args.Message, "error");
+            }
+
+            catch (NullReferenceException args)
+            {
+                return StatusHandler.NotFound(args.Message, "error");
+            }
+
+            if (result)
+                return StatusHandler.okResult($"new { userServices.DeviceId} updated", "success");
+
+            else
+                return StatusHandler.NotFound("error contact admin!", "error");  /// fix
+
         }
 
         #endregion
