@@ -340,7 +340,7 @@ namespace apiTest1.Data
             try
             {
                 checkService = await _commandDbContext.UserServices.FirstOrDefaultAsync(c => c.DeviceId == userServices.DeviceId);
-                if (checkService != null)
+                if (checkService == null)
                     throw new ArgumentException("Device not Found!");
             }
 
