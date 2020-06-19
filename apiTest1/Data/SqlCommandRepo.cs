@@ -252,7 +252,7 @@ namespace apiTest1.Data
             userServiceData.ApiKeyId = userData.apikey;
             userServiceData.DeviceId = userData.DeviceId;
             userServiceData.ServiceData = (short)userData.Userdata;
-            userServiceData.DataInsertDat = DateTime.Now;
+            userServiceData.DataInsertDat = DateTime.UtcNow;
             #endregion
 
             await _commandDbContext.UserData.AddAsync(userServiceData);
