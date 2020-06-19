@@ -45,7 +45,19 @@ namespace apiTest1.Controllers
         #endregion
 
 
-        #region GetCollctionServiceData
+        #region
+        [HttpPost]
+        [Route("user/getservices")]
+        public async Task<IActionResult> GetUserSerivces(GetUserServicesProfile getUserServices)
+        {
+            return Content("userService");///test
+        }
+
+
+        #endregion
+
+
+        #region GetCollectionServiceData
 
         [HttpPost]
         [Route("servicedata/getcollection")]
