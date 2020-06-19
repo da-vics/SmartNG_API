@@ -69,7 +69,7 @@ namespace apiTest1.Controllers
         [Route("userdataupload")]
         public async Task<IActionResult> UploadUserServiceData([FromBody] UserDataProfile userData)
         {
-            if (userData == null)
+            if (userData == null || userData.Userdata == null)
                 return StatusHandler.NotFound("Null Parameter Detected", "error");
 
             bool checkResult = false;

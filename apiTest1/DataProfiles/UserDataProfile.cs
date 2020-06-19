@@ -10,7 +10,7 @@ namespace apiTest1.DataProfiles
         [Required]
         public Guid DeviceId { get; set; }
         [Required]
-        public decimal Userdata { get; set; }
+        public decimal? Userdata { get; set; } = null;
 
 
     }

@@ -251,7 +251,7 @@ namespace apiTest1.Data
             #region setDataFields
             userServiceData.ApiKeyId = userData.apikey;
             userServiceData.DeviceId = userData.DeviceId;
-            userServiceData.ServiceData = userData.Userdata;
+            userServiceData.ServiceData = (short)userData.Userdata;
             userServiceData.DataInsertDat = DateTime.Now;
             #endregion
 
