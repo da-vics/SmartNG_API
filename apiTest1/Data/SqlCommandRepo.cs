@@ -215,7 +215,7 @@ namespace apiTest1.Data
             {
                 var checkService = await _commandDbContext.UserServices.FirstOrDefaultAsync(c => c.ServiceName == convertToDBName);
                 if (checkService != null)
-                    throw new ArgumentException("Service already exist");
+                    throw new ArgumentException("ServiceName already exist");
             }
 
             catch (ArgumentException)
@@ -251,7 +251,7 @@ namespace apiTest1.Data
             #region setDataFields
             userServiceData.ApiKeyId = userData.apikey;
             userServiceData.DeviceId = userData.DeviceId;
-            userServiceData.ServiceData = (short)userData.Userdata;
+            userServiceData.ServiceData = (decimal)userData.Userdata;
             userServiceData.DataInsertDat = DateTime.UtcNow;
             #endregion
 
