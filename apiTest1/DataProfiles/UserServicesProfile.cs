@@ -15,7 +15,7 @@ namespace apiTest1.DataProfiles
         public Guid DeviceId { get; set; }
 
         [Required]
-        public short DeviceType { get; set; }
+        public short? DeviceType { get; set; } = null;
 
         public short? DeviceStatus { get; set; } = null;
     }

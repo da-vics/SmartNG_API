@@ -379,7 +379,7 @@ namespace apiTest1.Data
                 throw;
             }
 
-            checkService.DeviceType = userServices.DeviceType;
+            checkService.DeviceType = (short)userServices.DeviceType;
 
             _commandDbContext.UserServices.Update(checkService);
 

@@ -98,7 +98,7 @@ namespace apiTest1.Controllers
         [Route("updateuserservice")]
         public async Task<IActionResult> UpdateUserService(UserServicesProfile userServices)
         {
-            if (string.IsNullOrEmpty(userServices.ServiceName) || userServices == null)
+            if (string.IsNullOrEmpty(userServices.ServiceName) || userServices == null || userServices.DeviceType == null)
                 return StatusHandler.NotFound("null Parameter Detected", "error");
 
             bool result = false;
@@ -134,7 +134,7 @@ namespace apiTest1.Controllers
         [Route("adduserservice")]
         public async Task<IActionResult> AddUserService(UserServicesProfile userServices)
         {
-            if (string.IsNullOrEmpty(userServices.ServiceName))
+            if (string.IsNullOrEmpty(userServices.ServiceName) || userServices.DeviceType == null)
                 return StatusHandler.NotFound("null Parameter Detected", "error");
 
             bool result = false;
