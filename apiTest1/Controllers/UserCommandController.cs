@@ -52,7 +52,7 @@ namespace apiTest1.Controllers
         public async Task<IActionResult> GetUserSerivces(GetUserServicesProfile getUserServices)
         {
 
-            List<GetUserDataProfile> result = null;
+            List<GetUserServiceDataProfile> result = null;
 
             try
             {

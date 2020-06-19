@@ -29,7 +29,7 @@ namespace apiTest1.Data
 
         public abstract Task<string> VerifyUser(UserLoginProfile confirmUserDetails);
 
-        public abstract Task<List<GetUserDataProfile>> GetUserServices(GetUserServicesProfile getUserServices);
+        public abstract Task<List<GetUserServiceDataProfile>> GetUserServices(GetUserServicesProfile getUserServices);
 
         public abstract Task<List<UserDataProfileConsumption>> GetUserCollatedServiceData(GetCollectionUserDataProfile getUserData);
 

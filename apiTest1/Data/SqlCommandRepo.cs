@@ -390,7 +390,7 @@ namespace apiTest1.Data
         #endregion
 
         #region GetUserServices
-        public override async Task<List<GetUserDataProfile>> GetUserServices(GetUserServicesProfile getUserServices)
+        public override async Task<List<GetUserServiceDataProfile>> GetUserServices(GetUserServicesProfile getUserServices)
         {
             if (string.IsNullOrEmpty(getUserServices.ApiKey) || getUserServices == null)
                 return null;
@@ -414,11 +414,11 @@ namespace apiTest1.Data
                 throw;
             }
 
-            List<GetUserDataProfile> dataProfiles = new List<GetUserDataProfile>();
+            List<GetUserServiceDataProfile> dataProfiles = new List<GetUserServiceDataProfile>();
 
             await result.ForEachAsync((service) =>
              {
-                 dataProfiles.Add(new GetUserDataProfile { apikey = service.ApiKeyId, DeviceId = service.DeviceId });
+                 dataProfiles.Add(new GetUserServiceDataProfile { DeviceId = service.DeviceId, ServiceName = service.ServiceName });
              });
 
             return dataProfiles;
