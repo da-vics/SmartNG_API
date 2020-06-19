@@ -1,6 +1,7 @@
 ﻿using apiTest1.DataProfiles;
 using apiTest1.Helpers;
 using apiTest1.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SmartNG.DataProfiles;
 using System;
@@ -386,7 +387,43 @@ namespace apiTest1.Data
 
             return true;
         }
-
         #endregion
+
+        #region GetUserServices
+        public override async Task<List<GetUserDataProfile>> GetUserServices(GetUserServicesProfile getUserServices)
+        {
+            if (string.IsNullOrEmpty(getUserServices.ApiKey) || getUserServices == null)
+                return null;
+
+            IQueryable<UserServicesModel> result = null;
+            await Task.Run(() =>
+             {
+                 result = from service in _commandDbContext.UserServices
+                          where getUserServices.ApiKey == service.ApiKeyId
+                          select service;
+             });
+
+            try
+            {
+                if (result == null || result.Count<UserServicesModel>() <= 0)
+                    throw new ArgumentException("No Services");
+            }
+
+            catch (ArgumentException)
+            {
+                throw;
+            }
+
+            List<GetUserDataProfile> dataProfiles = new List<GetUserDataProfile>();
+
+            await result.ForEachAsync((service) =>
+             {
+                 dataProfiles.Add(new GetUserDataProfile { apikey = service.ApiKeyId, DeviceId = service.DeviceId });
+             });
+
+            return dataProfiles;
+        }
+        #endregion
+
     }
 }

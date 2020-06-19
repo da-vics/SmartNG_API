@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Threading.Tasks;
 using apiTest1.Data;
@@ -45,14 +46,31 @@ namespace apiTest1.Controllers
         #endregion
 
 
-        #region
+        #region GetUserServices
         [HttpPost]
         [Route("user/getservices")]
         public async Task<IActionResult> GetUserSerivces(GetUserServicesProfile getUserServices)
         {
-            return Content("userService");///test
-        }
 
+            List<GetUserDataProfile> result = null;
+
+            try
+            {
+                result = await _sqlCommandRepo.GetUserServices(getUserServices);
+            }
+
+            catch (ArgumentException args)
+            {
+                return StatusHandler.NotFound(args.Message, "error");
+            }
+
+
+            if (result == null || result.Count <= 0)
+                return StatusHandler.NotFound("No Services", "error");
+
+            return Ok(result);
+
+        }
 
         #endregion
 
