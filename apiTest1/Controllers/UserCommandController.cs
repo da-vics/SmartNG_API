@@ -38,7 +38,7 @@ namespace apiTest1.Controllers
             var result = await _sqlCommandRepo.GetUserServiceData(getUserData);
 
             if (result == null)
-                return StatusHandler.NotFound("Invalid Opeartion", "error");
+                return StatusHandler.NotFound("No Data", "error");
 
             return Ok(result);
         }
