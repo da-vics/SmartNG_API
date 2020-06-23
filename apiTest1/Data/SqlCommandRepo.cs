@@ -223,7 +223,13 @@ namespace apiTest1.Data
                 throw;
             }
 
-            var newservice = new UserServicesModel { ApiKeyId = userServices.ApiKey, ServiceName = convertToDBName, DeviceId = userServices.DeviceId };
+            var newservice = new UserServicesModel
+            {
+                ApiKeyId = userServices.ApiKey,
+                ServiceName = convertToDBName,
+                DeviceId = userServices.DeviceId,
+                DeviceType = (short)userServices.DeviceType
+            };
             await _commandDbContext.UserServices.AddAsync(newservice);
 
 
