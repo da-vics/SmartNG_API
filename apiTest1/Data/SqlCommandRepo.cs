@@ -216,6 +216,10 @@ namespace apiTest1.Data
                 var checkService = await _commandDbContext.UserServices.FirstOrDefaultAsync(c => c.ServiceName == convertToDBName);
                 if (checkService != null)
                     throw new ArgumentException("ServiceName already exist");
+
+                var checkServiceId = await _commandDbContext.UserServices.FirstOrDefaultAsync(c => c.DeviceId == userServices.DeviceId);
+                if (checkServiceId != null)
+                    throw new ArgumentException("DeviceId has been registered");
             }
 
             catch (ArgumentException)
