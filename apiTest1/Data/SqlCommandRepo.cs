@@ -21,20 +21,11 @@ namespace apiTest1.Data
         private readonly DataEncryptionHelper _dataEncryptionHelper;
         #endregion
 
-        #region PublicProps
-        public readonly UserRegisterModel RegisterModel;
-        public readonly UserServicesModel servicesModel;
-        public readonly UserServiceDataModel serviceDataModel;
-        #endregion
-
 
         #region Constructor
         public SqlCommandRepo(apiDBContext commandDbContext)
         {
             _commandDbContext = commandDbContext;
-            RegisterModel = new UserRegisterModel();
-            servicesModel = new UserServicesModel();
-            serviceDataModel = new UserServiceDataModel();
             _dataEncryptionHelper = new DataEncryptionHelper();
         }
         #endregion
