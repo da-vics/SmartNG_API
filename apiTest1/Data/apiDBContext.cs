@@ -50,7 +50,7 @@ namespace apiTest1.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=tcp:smartngdbserver.database.windows.net,1433;Initial Catalog=SmartNG_db;User Id=SmartNG@smartngdbserver;Password=Gamesvic1");
+            optionsBuilder.UseSqlServer("Data Source=tcp:smartngdbserver.database.windows.net,1433;Initial Catalog=SmartNG_db;User Id=SmartNG@smartngdbserver;Password=temp1234");
 
         }
     }
